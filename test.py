@@ -18,8 +18,8 @@ SCREEN_HEIGHT = 720
 
 # Red Bounds
 redCode = (0, 0, 255)
-lower_rangeR = np.array([0, 160, 210])
-upper_rangeR = np.array([10, 255, 255])
+lower_rangeR = np.array([130, 150, 210])
+upper_rangeR = np.array([180, 255, 255])
 
 # Orange Bounds
 orangeCode = (10, 255, 255)
@@ -28,8 +28,8 @@ upper_rangeO = np.array([30, 215, 255])
 
 # Blue Bounds
 blueCode = (255, 0, 0)
-lower_rangeB = np.array([90, 130, 100])
-upper_rangeB = np.array([115, 255, 255])
+lower_rangeB = np.array([75, 95, 170])
+upper_rangeB = np.array([105, 255, 255])
 
 # Green Bounds
 greenCode = (0, 255, 0)
@@ -38,8 +38,8 @@ upper_rangeG = np.array([75, 255, 255])
 
 # Yellow Bounds
 yellowCode = (0, 255, 255)
-lower_rangeY = np.array([25, 50, 200])
-upper_rangeY = np.array([75, 120, 255])
+lower_rangeY = np.array([20, 60, 245])
+upper_rangeY = np.array([35, 175, 255])
 
 # White Bounds
 whiteCode = (255, 255, 255)
@@ -55,7 +55,7 @@ def recognition(frame, colorStr, colorCode, lowerBound, upperBound, all_colors):
         x = 600
         if cv2.contourArea(c) > x:
             x,y,w,h=cv2.boundingRect(c)
-            if (SCREEN_WIDTH * (1 / 4) < x < SCREEN_WIDTH * (3 / 4)) & (SCREEN_HEIGHT * (1 / 4) < y < SCREEN_HEIGHT * (3 / 4)): 
+            if (SCREEN_WIDTH * (1 / 3) < x < SCREEN_WIDTH * (2 / 3)) & (SCREEN_HEIGHT * (1 / 3) < y < SCREEN_HEIGHT * (2 / 3)): 
                 cv2.rectangle(frame, (x, y), (x + w, y + h), colorCode, 2)
                 cv2.putText(frame, (colorStr), (x, y), cv2.FONT_HERSHEY_PLAIN,1,colorCode, 2)
                 if len(all_colors) < 9: 
@@ -63,12 +63,19 @@ def recognition(frame, colorStr, colorCode, lowerBound, upperBound, all_colors):
             
 def print_all_colors(all_colors):
     if len(all_colors) == 9:
+        print('--------------------------------')
         for i in range(0, len(all_colors)):
             # print((all_colors[i].x, all_colors[i].y, all_colors[i].colors), end="  ")
-            print((all_colors[i].colors), end="  ")
+            print((all_colors[i].colors[0]), end="  ")
             if (i + 1)% 3 == 0:
                 print('\n')
-        print(len(all_colors))
+        print('--------------------------------')
+        
+def print_all_sides(all_sides):
+    print("⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄")
+    for i in range(0, len(all_sides)):
+        print_all_colors(all_sides[i])
+    print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
 
 def sort_all_colors(all_colors):
     if len(all_colors) == 9:
@@ -102,14 +109,12 @@ while True:
         sort_all_colors(all_colors)
         print_all_colors(all_colors)
     elif key == ord("r"):
+        print("\033[2J\033[H", end="", flush=True)
         for i in range(0, len(all_colors)):
            all_sides[side].append(all_colors[i])
-        if (side < 1):
+        if (side < 5):
             side += 1
-        print("--------------------------------")
-        for i in range(0, len(all_sides)):
-            print_all_colors(all_sides[i])
-        print("--------------------------------")
+        print_all_sides(all_sides)
     elif key == ord("c"):
         all_colors.clear()
 cap.release()
