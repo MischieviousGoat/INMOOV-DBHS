@@ -1,1 +1,3 @@
-ENi meany MineY Mo Cath a tiger by ity to if it hollers let it go eanu meany miny mo
+Link for model:
+https://huggingface.co/TheBloke/CodeLlama-13B-GGUF
+https://huggingface.co/FlorianJc/Vigostral-7b-Chat-GGUF
